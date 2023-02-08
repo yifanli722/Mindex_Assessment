@@ -6,16 +6,18 @@ import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
 import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.EmployeeService;
-import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
+@SuppressWarnings("ALL")
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -100,8 +102,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Compensation readCompensationRecord(String id) {
-        return compensationRepository.findByEmployeeId(id);
+        Compensation compensation = compensationRepository.findByEmployeeId(id);
+        if (compensation == null) {
+            throw new ResourceNotFoundException("No Compensation found for employeeId " + id);
+        }
+
+        return compensation;
     }
+}
 
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+class ResourceNotFoundException extends RuntimeException {
 
+    public ResourceNotFoundException(String s) {
+        super(s);
+    }
 }

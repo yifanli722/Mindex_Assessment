@@ -1,6 +1,5 @@
 package com.mindex.challenge.controller;
 
-import com.mindex.challenge.dao.CompensationRepository;
 import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.data.Employee;
 import com.mindex.challenge.data.ReportingStructure;
@@ -10,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@SuppressWarnings("ALL")
 @RestController
 public class EmployeeController {
     private static final Logger LOG = LoggerFactory.getLogger(EmployeeController.class);
@@ -48,7 +48,6 @@ public class EmployeeController {
     //TASK 2
     @PostMapping("/compensation")
     public Compensation createCompensation(@RequestBody Compensation compensation) {
-        String id = compensation.getEmployeeId();
         return employeeService.createCompensationRecord(compensation);
     }
 
